@@ -1,0 +1,22 @@
+@import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.radio-custom {
+    @apply appearance-none w-2 h-2 border-2 border-gray-300 rounded-sm bg-white cursor-pointer;
+    position: relative;
+  }
+  
+  .radio-custom:checked::before {
+    content: "";
+    @apply block w-2 h-2 bg-blue-600;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+
+  .sidenav-button{
+    @apply flex gap-2 items-center cursor-pointer p-2 pl-4 rounded-r-[25px] focus:bg-darkBlue focus:text-white hover:bg-lightBlue hover:text-white
+  }

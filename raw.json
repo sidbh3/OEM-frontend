@@ -1,0 +1,12 @@
+[
+  { "vendorName": "Vendor #1", "oemName": "Maruti Suzuki", "phoneNumber": "(245) 555-2222", "email": "jane123@email.com", "state": "Delhi", "rating": 4.9 },
+  { "vendorName": "Vendor #2", "oemName": "Volkswagen", "phoneNumber": "(225) 555-3333", "email": "jane222@email.com", "state": "Uttar Pradesh", "rating": 4.9 },
+  { "vendorName": "Vendor #3", "oemName": "TATA", "phoneNumber": "(225) 444-0118", "email": "jane@email.com", "state": "Rajasthan", "rating": 4.9 },
+  { "vendorName": "Vendor #4", "oemName": "Hyundai", "phoneNumber": "(205) 111-0100", "email": "floyd@yahoo.com", "state": "Punjab", "rating": 4.9 },
+  { "vendorName": "Vendor #5", "oemName": "Kia", "phoneNumber": "(205) 888-0100", "email": "floyd111@yahoo.com", "state": "Chennai", "rating": 4.9 },
+  { "vendorName": "Vendor #6", "oemName": "Volkswagen", "phoneNumber": "(205) 555-555", "email": "floyd434@yahoo.com", "state": "Rajasthan", "rating": 4.8 },
+  { "vendorName": "Vendor #7", "oemName": "Maruti Suzuki", "phoneNumber": "(302) 666-0107", "email": "ronald33@email.com", "state": "Uttar Pradesh", "rating": 4.8 },
+  { "vendorName": "Vendor #8", "oemName": "Honda", "phoneNumber": "(302) 555-999", "email": "ronald@email.com", "state": "Delhi", "rating": 4.8 },
+  { "vendorName": "Vendor #9", "oemName": "Maruti Suzuki", "phoneNumber": "(302) 111-0107", "email": "ronald3r4t5@adobe.com", "state": "Rajasthan", "rating": 4.8 },
+  { "vendorName": "Vendor #10", "oemName": "Kia", "phoneNumber": "(252) 555-444", "email": "marvinvw@eemail.com", "state": "Delhi", "rating": 4.7 }
+]
