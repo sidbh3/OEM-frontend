@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-// import axios from 'axios'; 
+import axios from 'axios'; 
 import rawData from '../request.json';
 import { useNavbar } from '../context/NavContext';
 import RequestButton from './RequestButton';
@@ -7,28 +7,44 @@ import RequestButton from './RequestButton';
 const ITEMS_PER_PAGE = 20;
 
 const RequestOemTable = () => {
-  const [data, setData] = useState([]);
+  const [data, setData] = useState([]); // Ensure data is initialized as an array
   const [currentPage, setCurrentPage] = useState(1);
   const { isopen } = useNavbar();
 
   useEffect(() => {
-   
-    /*
     axios.get('YOUR_BACKEND_ENDPOINT_HERE')
       .then(response => {
-        setData(response.data);
+        if (Array.isArray(response.data)) {
+          setData(response.data);
+        } else {
+          console.error("Fetched data is not an array!", response.data);
+          setData([]); // Fallback to empty array if data is not an array
+        }
       })
       .catch(error => {
         console.error("There was an error fetching the data!", error);
+        setData(rawData); // Fallback to rawData
       });
-    */
-    
-    
-    setData(rawData);
   }, []);
 
   const handlePageChange = (pageNumber) => {
     setCurrentPage(pageNumber);
+  };
+
+  const handleAction = (requestNumber, actionType) => {
+    axios.post(`YOUR_BACKEND_ENDPOINT_HERE/${requestNumber}/${actionType}`)
+      .then(response => {
+        setData(prevData => 
+          prevData.map(item =>
+            item.requestNumber === requestNumber
+              ? { ...item, requestStatus: actionType === 'accept' ? 'Accepted' : 'Rejected' }
+              : item
+          )
+        );
+      })
+      .catch(error => {
+        console.error(`There was an error processing the request!`, error);
+      });
   };
 
   const paginatedData = data.slice((currentPage - 1) * ITEMS_PER_PAGE, currentPage * ITEMS_PER_PAGE);
@@ -58,10 +74,16 @@ const RequestOemTable = () => {
                 <td className="p-2">{request.oemName}</td>
              
                 <td className="p-2">
-                  <button className="bg-red-400 text-white px-2 py-1 mr-2 rounded text-xs">
+                  <button 
+                    onClick={() => handleAction(request.requestNumber, 'reject')}
+                    className="bg-red-400 text-white px-2 py-1 mr-2 rounded text-xs"
+                  >
                     Reject
                   </button>
-                  <button className="bg-green-500 text-white px-2 py-1 rounded text-xs">
+                  <button 
+                    onClick={() => handleAction(request.requestNumber, 'accept')}
+                    className="bg-green-500 text-white px-2 py-1 rounded text-xs"
+                  >
                     Accept
                   </button>
                 </td>
