@@ -3,6 +3,21 @@ import { Pie } from "react-chartjs-2";
 import "chart.js/auto";
 
 const Dashboard = () => {
+  // Backend API call or data fetching logic can go here
+  // Example: Fetching data from an API
+  /*
+  useEffect(() => {
+    fetch('/api/dashboard-data')
+      .then(response => response.json())
+      .then(data => {
+        // Set data to state variables
+      })
+      .catch(error => {
+        console.error('Error fetching data:', error);
+      });
+  }, []);
+  */
+
   const data = {
     labels: [
       "Pre-Boarding",
@@ -14,7 +29,7 @@ const Dashboard = () => {
     ],
     datasets: [
       {
-        data: [20, 37, 30, 116, 50, 34],
+        data: [20, 37, 30, 116, 50, 34], // This data can be dynamically set using state variables from the API call
         backgroundColor: [
           "#9b59b6",
           "#2ecc71",
@@ -103,7 +118,7 @@ const Dashboard = () => {
             </ul>
           </div>
 
-        
+          {/* Right Side: Pie Chart */}
           <div className="flex items-center justify-center md:justify-end mt-8 md:mt-0">
             <div className="bg-blue-50 rounded-lg p-4 shadow-md flex flex-col justify-center items-center w-64 h-64">
               <h4 className="text-center font-semibold mb-2">OEM</h4>
@@ -115,7 +130,6 @@ const Dashboard = () => {
         </div>
         <div> pie chart </div>
       </div>
-
 
       <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-6xl mt-10">
         <h1 className="text-2xl font-bold mb-6">Admin | Dashboard</h1>
@@ -178,7 +192,7 @@ const Dashboard = () => {
             </ul>
           </div>
 
-        
+          {/* Right Side: Pie Chart */}
           <div className="flex items-center justify-center md:justify-end mt-8 md:mt-0">
             <div className="bg-blue-50 rounded-lg p-4 shadow-md flex flex-col justify-center items-center w-64 h-64">
               <h4 className="text-center font-semibold mb-2">OEM</h4>
