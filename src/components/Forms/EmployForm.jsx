@@ -7,35 +7,39 @@ const EmployForm = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    // Backend integration template (commented out)
-    // const formData = {
-    //   firstName: e.target.firstName.value,
-    //   middleName: e.target.middleName.value,
-    //   lastName: e.target.lastName.value,
-    //   gender: e.target.gender.value,
-    //   employeeId: e.target.employeeId.value,
-    //   doj: e.target.doj.value,
-    //   workEmail: e.target.workEmail.value,
-    //   workLocation: e.target.workLocation.value,
-    //   designation: e.target.designation.value,
-    //   department: e.target.department.value,
-    //   declaration: e.target.declaration.checked,
-    // };
+    const formData = {
+      first_name: e.target.first_name.value,
+      last_name: e.target.last_name.value,
+      gender: e.target.gender.value,
+      Employee_id: e.target.employeeId.value,
+      date_of_joining: e.target.doj.value,  // Ensure this is in the correct format (YYYY-MM-DD)
+      work_email: e.target.workEmail.value,
+      work_location: e.target.workLocation.value,
+      Designation: e.target.designation.value,
+      Department: e.target.department.value,
+    };
 
-    // fetch('https://your-backend-api.com/submit', {
-    //   method: 'POST',
-    //   headers: {
-    //     'Content-Type': 'application/json',
-    //   },
-    //   body: JSON.stringify(formData),
-    // })
-    //   .then(response => response.json())
-    //   .then(data => {
-    //     console.log('Success:', data);
-    //   })
-    //   .catch((error) => {
-    //     console.error('Error:', error);
-    //   });
+    fetch('http://127.0.0.1:8000/employee-registration/', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(formData),
+    })
+      .then(response => {
+        if (!response.ok) {
+          return response.json().then(err => {
+            throw new Error(JSON.stringify(err));
+          });
+        }
+        return response.json();
+      })
+      .then(data => {
+        console.log('Success:', data);
+      })
+      .catch((error) => {
+        console.error('Error:', error);
+      });
 
     console.log("Form submitted"); // Placeholder for actual form submission
   };
@@ -61,7 +65,7 @@ const EmployForm = () => {
         <div className="grid grid-cols-2 gap-x-8 gap-y-6">
           <input
             type="text"
-            name="firstName"
+            name="first_name"
             placeholder="First Name"
             className="p-3 border border-blue-600 rounded-md focus:outline-none"
           />
@@ -73,7 +77,7 @@ const EmployForm = () => {
           />
           <input
             type="text"
-            name="lastName"
+            name="last_name"
             placeholder="Last Name"
             className="p-3 border border-blue-600 rounded-md focus:outline-none"
           />
@@ -90,9 +94,9 @@ const EmployForm = () => {
             className="p-3 border border-blue-600 rounded-md focus:outline-none"
           />
           <input
-            type="text"
+            type="date"
             name="doj"
-            placeholder="DOJ"
+            placeholder="Date of Joining"
             className="p-3 border border-blue-600 rounded-md focus:outline-none"
           />
           <input

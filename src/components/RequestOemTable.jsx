@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios'; 
+import axios from 'axios';
 import rawData from '../request.json';
 import { useNavbar } from '../context/NavContext';
 import RequestButton from './RequestButton';
@@ -12,7 +12,7 @@ const RequestOemTable = () => {
   const { isopen } = useNavbar();
 
   useEffect(() => {
-    axios.get('YOUR_BACKEND_ENDPOINT_HERE')
+    axios.get('http://127.0.0.1:8000/request/')
       .then(response => {
         if (Array.isArray(response.data)) {
           setData(response.data);
@@ -20,6 +20,7 @@ const RequestOemTable = () => {
           console.error("Fetched data is not an array!", response.data);
           setData([]); // Fallback to empty array if data is not an array
         }
+        console.log("Fetched data", response.data); // Corrected console.log
       })
       .catch(error => {
         console.error("There was an error fetching the data!", error);
@@ -54,27 +55,24 @@ const RequestOemTable = () => {
     <div className={`m-auto -mt-10 p-20 shadow-4xl ${isopen ? 'ml-64' : 'ml-0'} font-poppins`}>
       <h1 className="text-2xl font-bold mb-4">OEM Requests</h1>
       <RequestButton/>
-     
+
       <div className="overflow-x-auto">
         <table className="table-auto w-full">
           <thead>
             <tr className="bg-lightGray text-white text-left">
-              <th className="p-2 font-semibold">Request Number</th>
-              <th className="p-2 font-semibold">Request Date</th>
-              <th className="p-2 font-semibold">OEM Name</th>
-              <th className="p-2 font-semibold">Action</th>
-              <th className="p-2 font-semibold">Request Status</th>
+              <th className="p-2 font-semibold">Request Number</th><th className="p-2 font-semibold">Request Date</th><th className="p-2 font-semibold">OEM Name</th><th className="p-2 font-semibold">Action</th><th className="p-2 font-semibold">Request Status</th>
             </tr>
           </thead>
           <tbody>
             {paginatedData.map((request, index) => (
               <tr key={index} className="hover:bg-gray-100">
-                <td className="p-2">{request.requestNumber}</td>
-                <td className="p-2">{request.requestDate}</td>
-                <td className="p-2">{request.oemName}</td>
-             
+                <td className="p-2">{request.request_number}</td>
+                <td className="p-2">{request.request_date}</td>
+                <td className="p-2">{request.name}</td>
+                <td className="p-2">{request.action }</td>
+                <td className="p-2">{request.request_status}</td>
                 <td className="p-2">
-                  <button 
+                  {/* <button 
                     onClick={() => handleAction(request.requestNumber, 'reject')}
                     className="bg-red-400 text-white px-2 py-1 mr-2 rounded text-xs"
                   >
@@ -85,7 +83,7 @@ const RequestOemTable = () => {
                     className="bg-green-500 text-white px-2 py-1 rounded text-xs"
                   >
                     Accept
-                  </button>
+                  </button> */}
                 </td>
                 <td className="p-2">{request.requestStatus}</td>
               </tr>
@@ -93,7 +91,7 @@ const RequestOemTable = () => {
           </tbody>
         </table>
       </div>
-     
+
       <div className="flex justify-between items-center mt-4">
         <span className="text-sm">
           Showing data {(currentPage - 1) * ITEMS_PER_PAGE + 1} to{' '}

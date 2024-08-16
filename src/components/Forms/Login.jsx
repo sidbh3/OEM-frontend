@@ -5,7 +5,7 @@ import DownImage from "../../assets/DownEllipse.png";
 import axios from 'axios'
 
 function Login() {
-  const [loginForm, setLoginForm] = useState({ username: "", password: "" });
+  const [loginForm, setLoginForm] = useState({ email: "", password: "" });
   const [loginError, setLoginError] = useState("");
 
   const handleLoginChange = (e) => {
@@ -15,18 +15,18 @@ function Login() {
 
   const handleLoginSubmit = async(e) => {
     e.preventDefault();
-    const { username, password } = loginForm;
+    const { email, password } = loginForm;
    
 
-    if (!username || !password) {
-      setLoginError("Username and password are required.");
+    if (!email || !password) {
+      setLoginError("Email and password are required.");
       return;
     }
 
     setLoginError("");
     console.log("Login form submitted:", loginForm);
    
-    const data=await axios.post('url',{username, password})
+    const data=await axios.post('http://127.0.0.1:8000/login/',{email, password})
     
   };
 
@@ -54,11 +54,11 @@ function Login() {
             </div>
             <form onSubmit={handleLoginSubmit} className="space-y-2 h-80">
               <div>
-                <label className="font-semibold text-base">Username</label>
+                <label className="font-semibold text-base">Email</label>
                 <input
                   type="text"
-                  name="username"
-                  value={loginForm.username}
+                  name="email"
+                  value={loginForm.email}
                   onChange={handleLoginChange}
                   className="w-full px-4 py-2 border-gray-300 outline-none focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
