@@ -1,22 +1,23 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import loginImage from "../../assets/Car.png";
 import Sideimage from "../../assets/Ellipse.png";
 import DownImage from "../../assets/DownEllipse.png";
-import axios from 'axios'
+import axios from 'axios';
 
 function Login() {
   const [loginForm, setLoginForm] = useState({ username: "", password: "" });
   const [loginError, setLoginError] = useState("");
+  const navigate = useNavigate(); // Initialize useNavigate
 
   const handleLoginChange = (e) => {
     const { name, value } = e.target;
     setLoginForm({ ...loginForm, [name]: value });
   };
 
-  const handleLoginSubmit = async(e) => {
+  const handleLoginSubmit = async (e) => {
     e.preventDefault();
     const { username, password } = loginForm;
-   
 
     if (!username || !password) {
       setLoginError("Username and password are required.");
@@ -24,10 +25,21 @@ function Login() {
     }
 
     setLoginError("");
-    console.log("Login form submitted:", loginForm);
-   
-    const data=await axios.post('url',{username, password})
-    
+
+    try {
+      // Assuming the backend login API returns a success response
+      const response = await axios.post('url', { username, password });
+
+      if (response.status === 200) {
+        // Redirect to the dashboard upon successful login
+        navigate('/dashboard');
+      } else {
+        setLoginError("Invalid username or password.");
+      }
+    } catch (error) {
+      console.error("Login failed:", error);
+      setLoginError("An error occurred during login.");
+    }
   };
 
   return (
@@ -50,7 +62,6 @@ function Login() {
         <div className="w-5/12 flex items-center justify-center relative z-20">
           <div className="w-[350px] bg-lightPurple p-8 rounded-lg">
             <div className="flex justify-around mb-6">
-             
             </div>
             <form onSubmit={handleLoginSubmit} className="space-y-2 h-80">
               <div>

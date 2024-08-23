@@ -11,6 +11,8 @@ import DashboardPage from "./pages/DashboardPage";
 import RequestVendorTablePage from "./pages/RequestVendorTablePage";
 import RequestOemTablePage from "./pages/RequestOemTablePage";
 import Info from "./pages/Info";
+import Bill from "./pages/Bill";
+import SignUp from "./pages/SignUp";
 
 const App = () => {
   return (
@@ -34,7 +36,9 @@ const App = () => {
           path="/vendor-form"
           element={<OnboardForm topheading="Vendor On-Boarding Form" />}
         />
+         <Route path="/BillSummary" element={<Bill/>} />
         <Route path="/MyInfo" element={<Info />}></Route>
+        <Route path="/Signup" element={<SignUp />}></Route>
       </Routes>
     </Router>
   );
