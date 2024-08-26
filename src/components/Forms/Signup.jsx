@@ -1,118 +1,203 @@
-import React, { useState } from 'react';
-import Captcha from 'react-captcha-code';
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import loginImage from "../../assets/Car.png"; // Adjust path if necessary
+import axios from "axios";
 
-const Signup = () => {
-  const [formData, setFormData] = useState({
-    name: '',
-    dob: '',
-    mobile: '',
-    email: '',
+function Signup() {
+  const [signupForm, setSignupForm] = useState({
+    fullName: "",
+    email: "",
+    password: "",
+    confirmPassword: "",
+    role: "", // Use a string instead of array for single selection
   });
-  const [captchaInput, setCaptchaInput] = useState('');
-  const [captchaCode, setCaptchaCode] = useState('');
+  const [signupError, setSignupError] = useState("");
+  const navigate = useNavigate();
 
-  const handleChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
-    });
-  };
+  const handleSignupChange = (e) => {
+    const { name, value, checked } = e.target;
 
-  const handleCaptchaChange = (value) => {
-    setCaptchaInput(value);
-  };
-
-  const handleCaptchaUpdate = (newCode) => {
-    setCaptchaCode(newCode);
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    if (captchaInput !== captchaCode) {
-      alert('Captcha does not match');
+    if (name === "role") {
+      setSignupForm((prevForm) => ({
+        ...prevForm,
+        role: checked ? value : "", // Only one role can be selected
+      }));
     } else {
-      alert('Signup successful');
+      setSignupForm({ ...signupForm, [name]: value });
     }
   };
 
+  const handleSignupSubmit = async (e) => {
+    e.preventDefault();
+    const { fullName, email, password, confirmPassword, role } = signupForm;
+
+    if (!fullName || !email || !password || !confirmPassword) {
+      setSignupError("All fields are required.");
+      return;
+    }
+
+    if (password !== confirmPassword) {
+      setSignupError("Passwords do not match.");
+      return;
+    }
+
+    setSignupError("");
+
+    try {
+      const response = await axios.post("url", { fullName, email, password, role });
+
+      if (response.status === 200) {
+        navigate("/dashboard");
+      } else {
+        setSignupError("Signup failed. Please try again.");
+      }
+    } catch (error) {
+      console.error("Signup failed:", error);
+      setSignupError("An error occurred during signup.");
+    }
+  };
+
+  const openPdf = () => {
+    window.open(`${process.env.PUBLIC_URL}/assets/instructions.pdf`, "_blank");
+  };
+
   return (
-    <div className="min-h-screen bg-gray-100 flex items-center justify-center">
-      <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-sm">
-        <h2 className="text-2xl font-semibold text-center mb-6">Signup</h2>
-        <form onSubmit={handleSubmit}>
-          <div className="mb-4">
-            <label className="block text-gray-700 text-sm font-bold mb-2">Name</label>
-            <input
-              type="text"
-              name="name"
-              value={formData.name}
-              onChange={handleChange}
-              className="w-full px-3 py-2 border rounded-lg text-gray-700 focus:outline-none focus:border-blue-500"
-              required
-            />
-          </div>
-          <div className="mb-4">
-            <label className="block text-gray-700 text-sm font-bold mb-2">Date of Birth</label>
-            <input
-              type="date"
-              name="dob"
-              value={formData.dob}
-              onChange={handleChange}
-              className="w-full px-3 py-2 border rounded-lg text-gray-700 focus:outline-none focus:border-blue-500"
-              required
-            />
-          </div>
-          <div className="mb-4">
-            <label className="block text-gray-700 text-sm font-bold mb-2">Mobile Number</label>
-            <input
-              type="tel"
-              name="mobile"
-              value={formData.mobile}
-              onChange={handleChange}
-              className="w-full px-3 py-2 border rounded-lg text-gray-700 focus:outline-none focus:border-blue-500"
-              pattern="[0-9]{10}"
-              required
-            />
-          </div>
-          <div className="mb-4">
-            <label className="block text-gray-700 text-sm font-bold mb-2">Email</label>
-            <input
-              type="email"
-              name="email"
-              value={formData.email}
-              onChange={handleChange}
-              className="w-full px-3 py-2 border rounded-lg text-gray-700 focus:outline-none focus:border-blue-500"
-              required
-            />
-          </div>
-          <div className="mb-4">
-            <Captcha
-              charNum={4}
-              height={40}
-              onChange={handleCaptchaUpdate}
-            />
-            <input
-              type="text"
-              name="captcha"
-              value={captchaInput}
-              onChange={(e) => handleCaptchaChange(e.target.value)}
-              placeholder="Enter Captcha"
-              className="w-full mt-2 px-3 py-2 border rounded-lg text-gray-700 focus:outline-none focus:border-blue-500"
-              required
-            />
-          </div>
-          <div className="flex items-center justify-between">
+    <div className="flex h-screen overflow-hidden">
+      <div className="w-3/5 bg-blue-900 text-white flex flex-col justify-center p-12">
+        <h1 className="text-5xl font-bold mb-2">Company Name</h1>
+        <p className="text-xl mb-10">Tag line / Company Description</p>
+        <img src={loginImage} alt="Car" className="object-cover" />
+      </div>
+      <div className="w-2/5 bg-white flex flex-col justify-center p-16">
+        <div className="w-full max-w-sm mx-auto">
+          <h2 className="text-3xl font-bold mb-6 text-center text-blue-900">
+            Create Account
+          </h2>
+
+          <form onSubmit={handleSignupSubmit} className="space-y-4">
+            <div>
+              <label className="block text-sm font-medium text-gray-900">
+                Full Name
+              </label>
+              <input
+                type="text"
+                name="fullName"
+                value={signupForm.fullName}
+                onChange={handleSignupChange}
+                className="mt-1 block w-full px-4 py-2 border border-gray-800 rounded-md shadow-sm focus:ring-black focus:border-black"
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-900">
+                Email Address
+              </label>
+              <input
+                type="email"
+                name="email"
+                value={signupForm.email}
+                onChange={handleSignupChange}
+                className="mt-1 block w-full px-4 py-2 border border-gray-800 rounded-md shadow-sm focus:ring-black focus:border-black"
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-900">
+                Password
+              </label>
+              <input
+                type="password"
+                name="password"
+                value={signupForm.password}
+                onChange={handleSignupChange}
+                className="mt-1 block w-full px-4 py-2 border border-gray-800 rounded-md shadow-sm focus:ring-black focus:border-black"
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-900">
+                Confirm Password
+              </label>
+              <input
+                type="password"
+                name="confirmPassword"
+                value={signupForm.confirmPassword}
+                onChange={handleSignupChange}
+                className="mt-1 block w-full px-4 py-2 border border-gray-800 rounded-md shadow-sm focus:ring-black focus:border-black"
+              />
+            </div>
+
+            <div className="flex items-center mb-2">
+              <p className="text-sm text-gray-500">
+                Read the instructions carefully before selecting an option.
+                <button
+                  type="button"
+                  onClick={openPdf}
+                  className="ml-2 text-gray-900"
+                >
+                  ℹ️
+                </button>
+              </p>
+            </div>
+
+            <div className="flex space-x-6 mb-4">
+              <div className="flex items-center">
+                <label className="text-sm text-gray-900 mr-2">OEM</label>
+                <input
+                  type="checkbox"
+                  name="role"
+                  value="OEM"
+                  checked={signupForm.role === "OEM"}
+                  onChange={handleSignupChange}
+                  className="mr-2"
+                />
+              </div>
+              <div className="flex items-center">
+                <label className="text-sm text-gray-900 mr-2">Vendor</label>
+                <input
+                  type="checkbox"
+                  name="role"
+                  value="Vendor"
+                  checked={signupForm.role === "Vendor"}
+                  onChange={handleSignupChange}
+                  className="mr-2"
+                />
+              </div>
+              <div className="flex items-center">
+                <label className="text-sm text-gray-900 mr-2">Admin</label>
+                <input
+                  type="checkbox"
+                  name="role"
+                  value="Admin"
+                  checked={signupForm.role === "Admin"}
+                  onChange={handleSignupChange}
+                  className="mr-2"
+                />
+              </div>
+            </div>
+
+            {signupError && (
+              <p className="text-red-500 text-sm mt-2">{signupError}</p>
+            )}
+
             <button
               type="submit"
-              className="bg-blue-500 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+              className="mt-1 w-full py-3 bg-blue-900 text-white font-bold rounded-lg hover:bg-blue-800 transition-colors"
             >
-              Signup
+              Sign Up
             </button>
-          </div>
-        </form>
+
+            <div className="text-center text-sm mt-4">
+              Already have an account?{" "}
+              <a href="/login" className="text-blue-900 font-medium">
+                Login
+              </a>
+            </div>
+          </form>
+        </div>
       </div>
     </div>
   );
-};
+}
 
 export default Signup;

@@ -14,11 +14,16 @@ import Info from "./pages/Info";
 import Bill from "./pages/Bill";
 import SignUp from "./pages/SignUp";
 
+import ResetPassword from "./pages/ResetPassword";
+
+
 const App = () => {
   return (
     <Router>
       <Routes>
         <Route path="/" element={<Login  />} />
+       
+  
         <Route path="/login" element={<Login />} />
         <Route path="/dashboard" element={<DashboardPage />} />
         <Route path="/order" element={<OrderPage />} />
@@ -28,6 +33,7 @@ const App = () => {
         <Route path="/oem-request" element={<RequestOemTablePage />} />
         <Route path="/vendor-request" element={<RequestVendorTablePage />} />
         <Route path="/employee-form" element={<EmployForm />} />
+        <Route path="/reset" element={<ResetPassword />} />
         <Route
           path="/oem-form"
           element={<OnboardForm topheading="OEM On-Boarding Form" />}

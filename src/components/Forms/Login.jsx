@@ -1,14 +1,13 @@
+
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import loginImage from "../../assets/Car.png";
-import Sideimage from "../../assets/Ellipse.png";
-import DownImage from "../../assets/DownEllipse.png";
-import axios from 'axios';
+import axios from "axios";
 
 function Login() {
-  const [loginForm, setLoginForm] = useState({ username: "", password: "" });
+  const [loginForm, setLoginForm] = useState({ email: "", password: "" });
   const [loginError, setLoginError] = useState("");
-  const navigate = useNavigate(); // Initialize useNavigate
+  const navigate = useNavigate();
 
   const handleLoginChange = (e) => {
     const { name, value } = e.target;
@@ -17,106 +16,125 @@ function Login() {
 
   const handleLoginSubmit = async (e) => {
     e.preventDefault();
-    const { username, password } = loginForm;
+    const { email, password } = loginForm;
 
-    if (!username || !password) {
-      setLoginError("Username and password are required.");
+    if (!email || !password) {
+      setLoginError("Email and password are required.");
       return;
     }
 
     setLoginError("");
 
     try {
-      // Assuming the backend login API returns a success response
-      const response = await axios.post('url', { username, password });
+      const response = await axios.post("url", { email, password });
 
       if (response.status === 200) {
-        // Redirect to the dashboard upon successful login
-        navigate('/dashboard');
+        navigate("/dashboard");
       } else {
-        setLoginError("Invalid username or password.");
+        setLoginError("Invalid email or password.");
       }
     } catch (error) {
       console.error("Login failed:", error);
       setLoginError("An error occurred during login.");
-      
     }
   };
 
+  const handleSignUpClick = () => {
+    navigate("/signup");
+  };
+
+  const handleForgotPasswordClick = () => {
+    navigate("/reset");
+  };
+
   return (
-    <>
-      <div className="flex h-screen bg-gray-100 relative overflow-y-hidden">
-        <div className="w-3/5">
-          <div className="relative">
-            <img
-              src={Sideimage}
-              alt="Bg image"
-              className="absolute top-0 left-0"
-            />
-          </div>
-          <img
-            src={loginImage}
-            alt="Login"
-            className="object-cover w-full h-auto relative z-10 left-28"
-          />
-        </div>
-        <div className="w-5/12 flex items-center justify-center relative z-20">
-          <div className="w-[350px] bg-lightPurple p-8 rounded-lg">
-            <div className="flex justify-around mb-6">
-            </div>
-            <form onSubmit={handleLoginSubmit} className="space-y-2 h-80">
-              <div>
-                <label className="font-semibold text-base">Username</label>
-                <input
-                  type="text"
-                  name="username"
-                  value={loginForm.username}
-                  onChange={handleLoginChange}
-                  className="w-full px-4 py-2 border-gray-300 outline-none focus:outline-none focus:ring-2 focus:ring-blue-500"
-                />
-              </div>
-              <div>
-                <label className="font-semibold text-base">Password</label>
-                <input
-                  type="password"
-                  name="password"
-                  value={loginForm.password}
-                  onChange={handleLoginChange}
-                  className="w-full px-4 py-2 border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                />
-              </div>
-              {loginError && (
-                <p className="text-red-500 text-sm">{loginError}</p>
-              )}
-              <div className="flex items-center pt-4 gap-8">
-                <label className="text-sm text-gray-600">Remember Me</label>
-                <input type="checkbox" className="mr-2" />
-              </div>
-              <div>
-                <p className="text-blue-700 text-sm cursor-pointer">
-                  Forgot Password
-                </p>
-              </div>
-              <div className="pt-5 ml-3">
-                <button
-                  type="submit"
-                  className="bg-blue-700 text-white font-bold p-2 px-5 rounded-xl hover:bg-blue-800 transition-colors duration-300">
-                  Login
-                </button>
-              </div>
-            </form>
-          </div>
-        </div>
-        <div>
-          <img
-            src={DownImage}
-            alt="Bg image"
-            className="w-[350px] absolute bottom-0 right-0"
-          />
+    <div className="flex h-screen overflow-hidden">
+      {/* Left Section */}
+      <div className="relative w-3/5 bg-darkBlue text-white flex flex-col justify-center items-center p-10">
+      
+        <h1 className="text-4xl font-bold mb-2">Company Name</h1>
+        <p className="text-xl mb-4">Tag line / Company Description</p>
+        <div className="relative z-10 mt-6">
+          <img src={loginImage} alt="Car" className="w-[90%]" />
         </div>
       </div>
-    </>
+
+      {/* Right Section */}
+      <div className="w-2/5 flex flex-col justify-center items-center bg-white p-10 relative">
+        <div className="absolute top-4 right-4 flex items-center space-x-2">
+          <select className="border border-gray-300 text-gray-700 text-sm rounded-md py-1 px-2">
+            <option value="en">English (US)</option>
+            <option value="fr">Français</option>
+            <option value="es">Español</option>
+          </select>
+        </div>
+        <div className="w-full max-w-md">
+          <h2 className="text-3xl font-bold text-blue-900 text-center mb-6">
+            LOGIN
+          </h2>
+          <form onSubmit={handleLoginSubmit} className="space-y-4">
+            <div>
+              <label className="block text-sm font-medium text-gray-900">
+                Email Address
+              </label>
+              <input
+                type="email"
+                name="email"
+                value={loginForm.email}
+                onChange={handleLoginChange}
+                className="mt-1 block w-full px-4 py-2 border border-gray-800 rounded-md shadow-sm focus:ring-black focus:border-black"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-900">
+                Password
+              </label>
+              <input
+                type="password"
+                name="password"
+                value={loginForm.password}
+                onChange={handleLoginChange}
+                className="mt-1 block w-full px-4 py-2 border border-gray-800 rounded-md shadow-sm focus:ring-black focus:border-black"
+              />
+            </div>
+            {loginError && <p className="text-red-500 text-sm">{loginError}</p>}
+            <div className="flex items-center justify-between">
+              <label className="flex items-center text-sm text-gray-600">
+                <input type="checkbox" className="mr-2" />
+                Remember Me
+              </label>
+              <p 
+                className="text-blue-700 text-sm cursor-pointer"
+                onClick={handleForgotPasswordClick}
+              >
+                Forgot Password
+              </p>
+            </div>
+            <button
+              type="submit"
+              className="w-full bg-darkBlue text-white font-bold py-2 px-4 rounded-md hover:bg-blue-800 transition-colors duration-300"
+            >
+              Login
+            </button>
+          </form>
+          <div className="mt-4 text-center">
+            <p className="text-sm text-gray-600">
+              Create an Account{" "}
+              <span
+                className="text-darkBlue font-medium cursor-pointer"
+                onClick={handleSignUpClick}
+              >
+                Sign up
+              </span>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
   );
 }
 
 export default Login;
+
+
+
