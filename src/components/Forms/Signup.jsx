@@ -12,19 +12,33 @@ function Signup() {
     role: "", // Use a string instead of array for single selection
   });
   const [signupError, setSignupError] = useState("");
+  const [passwordError, setPasswordError] = useState(""); // New state for password error
   const navigate = useNavigate();
 
   const handleSignupChange = (e) => {
     const { name, value, checked } = e.target;
 
-    if (name === "role") {
-      setSignupForm((prevForm) => ({
-        ...prevForm,
-        role: checked ? value : "", // Only one role can be selected
-      }));
-    } else {
-      setSignupForm({ ...signupForm, [name]: value });
-    }
+    setSignupForm((prevForm) => {
+      const updatedForm = { ...prevForm, [name]: value };
+
+      if (name === "role") {
+        return {
+          ...prevForm,
+          role: checked ? value : "", // Only one role can be selected
+        };
+      }
+
+      // Check password confirmation in real-time
+      if (name === "confirmPassword" || name === "password") {
+        if (updatedForm.password !== updatedForm.confirmPassword) {
+          setPasswordError("Passwords do not match.");
+        } else {
+          setPasswordError("");
+        }
+      }
+
+      return updatedForm;
+    });
   };
 
   const handleSignupSubmit = async (e) => {
@@ -42,6 +56,7 @@ function Signup() {
     }
 
     setSignupError("");
+    setPasswordError("");
 
     try {
       const response = await axios.post("url", { fullName, email, password, role });
@@ -125,6 +140,9 @@ function Signup() {
                 onChange={handleSignupChange}
                 className="mt-1 block w-full px-4 py-2 border border-gray-800 rounded-md shadow-sm focus:ring-black focus:border-black"
               />
+              {passwordError && (
+                <p className="text-red-500 text-sm mt-2">{passwordError}</p>
+              )}
             </div>
 
             <div className="flex items-center mb-2">
@@ -201,3 +219,4 @@ function Signup() {
 }
 
 export default Signup;
+
