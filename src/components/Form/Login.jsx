@@ -1,7 +1,7 @@
-
-import React, { useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import loginImage from "../../assets/Car.png";
+import bg from "../../assets/Background.png";
 import axios from "axios";
 
 function Login() {
@@ -48,19 +48,27 @@ function Login() {
   };
 
   return (
-    <div className="flex h-screen overflow-hidden">
+    <div className="flex h-screen overflow-hidden relative px-10">
+      <div className="absolute top-0 left-0 bottom-0 h-full w-full z-10 bg-darkBlue">
+        <img src={bg} alt="Background" className="w-full h-full" />
+      </div>
       {/* Left Section */}
-      <div className="relative w-3/5 bg-darkBlue text-white flex flex-col justify-center items-center p-10">
-      
-        <h1 className="text-4xl font-bold mb-2">Company Name</h1>
-        <p className="text-xl mb-4">Tag line / Company Description</p>
-        <div className="relative z-10 mt-6">
-          <img src={loginImage} alt="Car" className="w-[90%]" />
+      <div className="w-full h-full relative z-20 ">
+        <div className="flex flex-col w-full items-center justify-center gap-10">
+          <div className="w-full text-white">
+            <h1 className="text-4xl tracking-widest mt-5">Company Name</h1>
+            <p className="mt-4 text-xl tracking-widest ">
+              Tag Line / Company Description
+            </p>
+          </div>
+          <div className="w-full absolute bottom-10 -right-10 z-20  ">
+            <img src={loginImage} alt="car" className="w-full h-full" />
+          </div>
         </div>
       </div>
 
       {/* Right Section */}
-      <div className="w-2/5 flex flex-col justify-center items-center bg-white p-10 relative">
+      <div className="w-full flex flex-col justify-center items-center p-16 relative z-20 ">
         <div className="absolute top-4 right-4 flex items-center space-x-2">
           <select className="border border-gray-300 text-gray-700 text-sm rounded-md py-1 px-2">
             <option value="en">English (US)</option>
@@ -103,7 +111,7 @@ function Login() {
                 <input type="checkbox" className="mr-2" />
                 Remember Me
               </label>
-              <p 
+              <p
                 className="text-blue-700 text-sm cursor-pointer"
                 onClick={handleForgotPasswordClick}
               >
@@ -135,6 +143,3 @@ function Login() {
 }
 
 export default Login;
-
-
-

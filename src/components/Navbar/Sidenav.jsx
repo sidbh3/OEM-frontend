@@ -8,6 +8,7 @@ import {
   FaFileContract,
   FaCarSide,
   FaInfo,
+  FaFileAlt, // Added new icon for Document
 } from "react-icons/fa";
 import { RiDashboard2Fill } from "react-icons/ri";
 import Modal from "../Popup/Modal";
@@ -27,6 +28,7 @@ const Sidenav = () => {
     { icon: <FaCarSide />, label: "Registration", link: "", action: openModal },
     { icon: <FaFileContract />, label: "Contract", link: '/BillSummary' },
     { icon: <FaInfo />, label: "My Info", link: "/MyInfo" },
+    { icon: <FaFileAlt />, label: "Document", link: "/document" }, // New Document item added
   ];
 
   const filteredItems = menuItems.filter(item =>
